@@ -9,7 +9,8 @@ from libhoney.fields import FieldHolder
 class Event(object):
     '''An Event is a collection of fields that will be sent to Honeycomb.'''
 
-    def __init__(self, data={}, dyn_fields=[], fields=FieldHolder(), client=None):
+    def __init__(self, data={}, dyn_fields=[], fields=FieldHolder(), client=None,
+                 created_at=datetime.datetime.utcnow()):
         if client is None:
             client = state.G_CLIENT
 
@@ -35,7 +36,7 @@ class Event(object):
         self._fields += fields
 
         # fill in other info
-        self.created_at = datetime.datetime.utcnow()
+        self.created_at = created_at
         self.metadata = None
         # execute all the dynamic functions and add their data
         for fn in self._fields._dyn_fields:
